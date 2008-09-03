@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>files</key>
+	<dict>
+		<key>Background.png</key>
+		<data>
+		8bXtZWoO5uu6Icskl0bxk8hjXLA=
+		</data>
+		<key>Default.png</key>
+		<data>
+		8bXtZWoO5uu6Icskl0bxk8hjXLA=
+		</data>
+		<key>HelloWorld.nib</key>
+		<data>
+		2lOjWqFCwXV2X1zG2tC1qq1JhA0=
+		</data>
+		<key>Icon.png</key>
+		<data>
+		d+QWb14qyFAXnG6ivRv/GpSb5E8=
+		</data>
+		<key>MainWindow.nib</key>
+		<data>
+		nSolTEl7yfLkb03HAp+gUaUxd5o=
+		</data>
+		<key>PkgInfo</key>
+		<data>
+		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
+		<key>embedded.mobileprovision</key>
+		<data>
+		Du+P6kiUxwvtQTTQ47whNpWv2Ck=
+		</data>
+	</dict>
+	<key>rules</key>
+	<dict>
+		<key>.*</key>
+		<true/>
+		<key>Info.plist</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>10</real>
+		</dict>
+		<key>ResourceRules.plist</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>100</real>
+		</dict>
+	</dict>
+</dict>
+</plist>
