@@ -55,6 +55,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     IBOutlet UISwitch *switch2;	
 	NSString *tcptext;
 	NSString *string;
+	Boolean m_writetext;
 
     NSMutableArray * serviceList;
     NSInputStream * inputStream;
@@ -76,5 +77,9 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void) connectToHostName:(NSString *)hostname port:(unsigned short)port;
 - (void)openStreams;
 - (void)closeStreams;
+- (void)openStreamsSimple;
+- (void)closeStreamsSimple;
+
+
 @end
 

@@ -91,8 +91,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     // Dismiss the keyboard when the view outside the text field is touched.
     [textField resignFirstResponder];
     // Revert the text field to the previous value.
-    textField.text = self.string; 
+    //textField.text = self.string; 
     [super touchesBegan:touches withEvent:event];
+	
+
 }
 
 
@@ -117,34 +119,27 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 	if( [sender isOn] )
 	{
-		textField.text = [NSString stringWithFormat:@"its on!" ];
-		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.stop(1) MESSAGE 5 IPHONE\r\n"];
+		label.text = [NSString stringWithFormat:@"its on!" ];
+		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
 		NSLog(@"t -%@", self.tcptext);
 		//[NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
 		//textField.text = [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
 	}
 	else
 	{
-		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
+		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.stop(1) MESSAGE 5 IPHONE\r\n"];
 		NSLog(@"t -%@", self.tcptext);
-		//textField.text = [NSString stringWithFormat:@"its off!" ];
+		label.text = [NSString stringWithFormat:@"its off!" ];
 		//		self.tcptext = [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.stop(1) MESSAGE 5 IPHONE\r\n"];
 	}	
 	NSLog(@"starting2");
+	m_writetext = true;
 	
 	
-	int kServerPort = 8888;
-	[self connectToHostName:textField.text port:kServerPort];
-	
-	
-	NSString * stringToSend =  [NSString stringWithFormat:@"TEST"];
-	const uint8_t * rawstring =	(const uint8_t *)[stringToSend UTF8String];
-	
-	[outputStream write:rawstring maxLength:strlen(rawstring)];
-	
-	
-	//[self closeStreams];
-	
+	NSLog(@"connecting");
+	//int kServerPort = 8887;
+	[self connectToHostName:textField.text port:8887];
+	[self openStreams];
 	NSLog(@"finished");
 
 
@@ -153,31 +148,33 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void)switchAction2:(id)sender
 {
 
-//	if (inputStream && outputStream)
-//	{
-		[self closeStreams];
-//	}
-/*	
-	int kServerPort = 8888;
-	[self connectToHostName:textField.text port:kServerPort];
-*/	
-	/*
-	NSString * stringToSend =  [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(2) MESSAGE 5 IPHONE"];
-	const uint8_t * rawstring =	(const uint8_t *)[stringToSend UTF8String];
 	
-	[outputStream write:rawstring maxLength:strlen(rawstring)];
-	
-	NSLog(@"finished");
-	*/
+	NSLog(@"starting");
 	
 	if( [sender isOn] )
 	{
-		textField.text = [NSString stringWithFormat:@"its on!" ];
+		label.text = [NSString stringWithFormat:@"its on!" ];
+		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(2) MESSAGE 5 IPHONE\r\n"];
+		NSLog(@"t -%@", self.tcptext);
+		//[NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
+		//textField.text = [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
 	}
 	else
 	{
-		textField.text = [NSString stringWithFormat:@"switchAction 1: value = %d", @"its off!" ];
+		self.tcptext =  [[NSString alloc] initWithString:@"GREETING 3 LOLSCRIPT 13 Mixxx.stop(2) MESSAGE 5 IPHONE\r\n"];
+		NSLog(@"t -%@", self.tcptext);
+		label.text = [NSString stringWithFormat:@"its off!" ];
+		//		self.tcptext = [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.stop(1) MESSAGE 5 IPHONE\r\n"];
 	}	
+	NSLog(@"starting2");
+	m_writetext = true;
+	
+	
+	NSLog(@"connecting");
+	//int kServerPort = 8887;
+	[self connectToHostName:textField.text port:8888];
+	[self openStreams];
+	NSLog(@"finished"); 
 }
 
 
@@ -187,12 +184,14 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	//    NSInputStream * inputStream;
 	//   NSOutputStream * outputStream;
     
-	if (inputStream && outputStream) {
-        [self closeStreams];
+/*	if (inputStream && outputStream) {
+        [self closeStreamsSimples];
     }
-	
+*/	
     NSHost * host = [NSHost hostWithName:hostname];
-    [NSStream getStreamsToHost:host port:port inputStream:&inputStream outputStream:&outputStream];
+	inputStream = nil;
+	outputStream = nil;
+	[NSStream getStreamsToHost:host port:port inputStream:&inputStream outputStream:&outputStream];
 	
     //[inputStream setDelegate:self];
     //[outputStream setDelegate:self];
@@ -243,22 +242,26 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 				//                NSString * str = [NSString stringWithFormat:@"GET / HTTP/1.0\r\n\r\n"];
 				
 				NSLog(@"%@", self.tcptext);
-				NSString * str =  [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
-				
-                const uint8_t * rawstring =		(const uint8_t *)[self.tcptext UTF8String];
-				
-                [outputStream write:rawstring maxLength:strlen(rawstring)];
+				if( m_writetext == true)
+				{
+					NSString * str =  [NSString stringWithFormat:@"GREETING 3 LOLSCRIPT 13 Mixxx.play(1) MESSAGE 5 IPHONE\r\n"];
+					
+					const uint8_t * rawstring =		(const uint8_t *)[self.tcptext UTF8String];
+					
+					[outputStream write:rawstring maxLength:strlen(rawstring)];
+					m_writetext = false;
+				}
 			
 				
 				//[outputStream close];
-                //[self closeStreams];
+                 [self closeStreamsSimple];
 				
             }
 			
             break;
 			
         case NSStreamEventEndEncountered:;
-            [self closeStreams];
+            [self closeStreamsSimple];
             break;
         case NSStreamEventErrorOccurred:
 			break;			
@@ -290,17 +293,23 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     [outputStream open];
 }
 
-- (void)closeStreams {
-    [inputStream close];
-    [outputStream close];
-    [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [inputStream setDelegate:nil];
-    [outputStream setDelegate:nil];
-    [inputStream release];
-    [outputStream release];
-    inputStream = nil;
-    outputStream = nil;
+- (void)openStreamsSimple {
+    [inputStream open];
+    [outputStream open];
+}
+
+
+- (void)closeStreamsSimple {
+		[inputStream close];
+		[outputStream close];
+		[inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+		[outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+		[inputStream setDelegate:nil];
+		[outputStream setDelegate:nil];
+		[inputStream release];
+		[outputStream release];
+		inputStream = nil;
+		outputStream = nil;
 }
 
 @end
